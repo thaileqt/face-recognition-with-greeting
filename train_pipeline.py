@@ -8,6 +8,10 @@ from unidecode import unidecode
 
 class Pipeline:
     def __init__(self, text: str):
+        if not os.path.isdir('data'):
+            os.mkdir('data')
+        if not os.path.isdir('speechs'):
+            os.mkdir('speechs')
         no_accent_text = unidecode(text).strip().replace(' ', '')
         with open('text.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
