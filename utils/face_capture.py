@@ -5,7 +5,7 @@ import os
 from facenet_pytorch import MTCNN
 import torch
 
-def face_capture(name: str, image_count: int = 50):
+def face_capture(name: str, image_count: int = 10):
     # Set up the device
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -20,6 +20,7 @@ def face_capture(name: str, image_count: int = 50):
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
     # Create a directory to store the captured faces
+    name = name.strip().lower().replace(' ', '')
     if not os.path.exists('data/'+name):
         os.mkdir('data/'+name)
 

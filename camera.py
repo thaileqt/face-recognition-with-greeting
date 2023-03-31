@@ -1,7 +1,10 @@
+import json
+
 from facenet_pytorch import MTCNN, InceptionResnetV1
 import torch
 import cv2
 from playsound import playsound
+from unidecode import unidecode
 
 
 def face_match(frame, model_path):  # img_path= location of photo, data_path= location of data.pt
@@ -51,7 +54,9 @@ while True:
             try:
                 result = face_match(face, 'data.pt')
                 if result[1] < threshold:
-                    cv2.putText(frame, f'{result[0]}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+                    text_config = json.load(open('text.json', 'r'))
+                    name = unidecode(text_config[result[0]])
+                    cv2.putText(frame, f'{name}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
                     if result[0] not in appeared:
                         playsound('speechs/' + result[0] + '.wav')
                         appeared.append(result[0])

@@ -29,6 +29,6 @@ for img, idx in loader:
         name_list.append(idx_to_class[idx])  # names are stored in a list
 
 data = [embedding_list, name_list]
-torch.save(data, '../data.pt') # saving data.pt file
+torch.save(data, 'data.pt') # saving data.pt file
 
 
