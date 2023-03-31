@@ -5,6 +5,8 @@
 
 `$ pip3 install -r requirements.txt`
 
+`$ git clone https://github.com/NTT123/vietTTS.git`
+
 `$ cd vietTTS`
 
 `$ pip3 install -e .`
