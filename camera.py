@@ -33,7 +33,8 @@ resnet = InceptionResnetV1(pretrained='vggface2').eval()  # initializing resnet 
 cap = cv2.VideoCapture(0)
 
 threshold = 0.7
-appeared = []
+current_people = []
+disappear_frame_count = {}
 # Loop through the video frames
 while True:
     # Capture a frame from the camera
@@ -44,6 +45,7 @@ while True:
 
     # Detect faces using MTCNN
     boxes, _ = mtcnn.detect(frame)
+    appear_this_frame = []
 
     # Draw bounding boxes around the faces and save to file
     if boxes is not None:
@@ -57,12 +59,19 @@ while True:
                     text_config = json.load(open('text.json', 'r'))
                     name = unidecode(text_config[result[0]])
                     cv2.putText(frame, f'{name}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-                    if result[0] not in appeared:
+                    appear_this_frame.append(result[0])
+                    if result[0] not in current_people:
                         playsound('speechs/' + result[0] + '.wav')
-                        appeared.append(result[0])
-
+                        current_people.append(result[0])
+                        disappear_frame_count[result[0]] = 0
             except Exception as e:
                 print(e)
+    for people in current_people:
+        if people not in appear_this_frame:
+            disappear_frame_count[people] += 1
+            if disappear_frame_count[people] > 5:
+                current_people.remove(people)
+                disappear_frame_count.pop(people)
 
     # Display the output frame
     cv2.imshow('frame', cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
