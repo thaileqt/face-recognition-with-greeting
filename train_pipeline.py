@@ -37,5 +37,5 @@ class Pipeline:
 
 
 if __name__ == '__main__':
-    name = input('Enter your name: ')
+    name = input('Enter text: ')
     Pipeline(name)
