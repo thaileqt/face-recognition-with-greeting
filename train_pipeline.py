@@ -7,25 +7,26 @@ from unidecode import unidecode
 
 
 class Pipeline:
-    def __init__(self, text: str):
+    def __init__(self, name: str, text: str):
         if not os.path.isdir('data'):
             os.mkdir('data')
         if not os.path.isdir('speechs'):
             os.mkdir('speechs')
-        no_accent_text = unidecode(text).strip().replace(' ', '')
+        name = unidecode(name)
         with open('text.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
-        data[no_accent_text] = text
+        data[name] = text
         with open('text.json', 'w', encoding='utf-8') as f:
             json.dump(data, f)
-        self.text = no_accent_text
+        self.name = name
+        self.text = text
         self.face_capture()
         self.train()
         self.generate_speech()
 
     def face_capture(self):
         print('Capturing faces for training...')
-        face_capture(self.text)
+        face_capture(self.name)
 
     def train(self):
         print('Training model...')
@@ -33,9 +34,10 @@ class Pipeline:
 
     def generate_speech(self):
         print('Generating greeting speech...')
-        generate_speech(self.text)
+        generate_speech(self.name)
 
 
 if __name__ == '__main__':
-    name = input('Enter text: ')
-    Pipeline(name)
+    name = input('Enter name: ')
+    text = input('Enter text: ')
+    Pipeline(name, text)

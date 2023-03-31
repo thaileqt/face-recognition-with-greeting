@@ -6,3 +6,4 @@ playsound==1.3.0
 torch==1.13.1
 torchvision==0.14.1
 Unidecode==1.3.6
+PyObjC=9.0.1

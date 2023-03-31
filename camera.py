@@ -52,12 +52,14 @@ while True:
         for i, box in enumerate(boxes):
             x1, y1, x2, y2 = box.astype(int)
             face = frame[y1:y2, x1:x2, :]
+            if face is None:
+                continue
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             try:
                 result = face_match(face, 'data.pt')
                 if result[1] < threshold:
                     text_config = json.load(open('text.json', 'r'))
-                    name = unidecode(text_config[result[0]])
+                    name = result[0]
                     cv2.putText(frame, f'{name}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
                     appear_this_frame.append(result[0])
                     if result[0] not in current_people:

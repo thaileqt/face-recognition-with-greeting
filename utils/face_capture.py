@@ -7,7 +7,7 @@ import torch
 
 def face_capture(name: str, image_count: int = 10):
     # Set up the device
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
 
     # Initialize the MTCNN model
     mtcnn = MTCNN(keep_all=True, device=device)
@@ -21,6 +21,8 @@ def face_capture(name: str, image_count: int = 10):
 
     # Create a directory to store the captured faces
     name = name.strip().lower().replace(' ', '')
+    if not os.path.isdir('data'):
+        os.mkdir('data')
     if not os.path.exists('data/'+name):
         os.mkdir('data/'+name)
 
